@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chat WebSocket</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-box {
+            width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+
+        #chat {
+            height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-y: auto;
+            background: #fafafa;
+            margin-bottom: 10px;
+        }
+
+        .msg {
+            background: #e8f0fe;
+            padding: 8px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .area {
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #4caf50;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="chat-box">
+
+        <h1>Chat WebSocket</h1>
+
+        <div id="chat"></div>
+
+        <div class="area">
+            <input type="text" id="mensaje" placeholder="Escribe mensaje">
+            <button onclick="enviar()">Enviar</button>
+        </div>
+
+    </div>
+
+    <script>
+        let socket;
+
+        // conectar automático al abrir página
+        socket = new WebSocket("ws://localhost:3003");
+
+        socket.onmessage = (evento) => {
+            document.getElementById("chat").innerHTML +=
+                `<div class="msg">${evento.data}</div>`;
+
+            document.getElementById("chat").scrollTop =
+                document.getElementById("chat").scrollHeight;
+        };
+
+        function enviar() {
+            const input = document.getElementById("mensaje");
+
+            if (input.value.trim() !== "") {
+                socket.send(input.value);
+                input.value = "";
+            }
+        }
+
+        // Enter también envía
+        document.getElementById("mensaje").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                enviar();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
