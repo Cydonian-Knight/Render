@@ -35,6 +35,6 @@ wss.on("connection", (socket) => {
     });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, "0.0.0.0", () => {
     console.log("Servidor iniciado en puerto " + PORT);
 });
