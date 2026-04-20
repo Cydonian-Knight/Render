@@ -94,7 +94,7 @@
         let socket;
 
         // conectar automático al abrir página
-        socket = new WebSocket("ws://localhost:3003");
+        socket = new WebSocket("ws://localhost:10000");
 
         socket.onmessage = (evento) => {
             document.getElementById("chat").innerHTML +=
